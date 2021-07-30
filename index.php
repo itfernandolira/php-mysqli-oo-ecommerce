@@ -1,5 +1,58 @@
+<?php
+error_reporting(E_ERROR | E_PARSE);
+require_once("connection/connection.php");
+
+if (isset($_GET['lang'])) {
+    $lang=$_GET['lang'];
+    setcookie("lang",$lang);
+  }
+  else
+    if (isset($_COOKIE['lang'])) {
+      $lang=$_COOKIE['lang'];
+    }
+    else {
+      setcookie("lang","pt");
+      $lang="pt";
+    }
+
+//recordset Variaveis
+$qVariaveis = "SELECT * FROM variaveis$lang";
+$rsVariaveis = $csogani->query($qVariaveis);
+
+if($rsVariaveis === FALSE) {
+    die("Erro no SQL: " . $qVariaveis . " Error: " . $csogani->error);
+  }
+
+$rsVariaveis->data_seek(0);
+$row_rsVariaveis=$rsVariaveis->fetch_assoc();
+//$totalRows_rsCD = $rsCD->num_rows;
+
+//recordset Redes Sociais
+$qRedesSociais = "SELECT * FROM redessociais";
+$rsRedesSociais = $csogani->query($qRedesSociais);
+
+if($rsRedesSociais === FALSE) {
+    die("Erro no SQL: " . $qRedesSociais . " Error: " . $csogani->error);
+  }
+
+$rsRedesSociais->data_seek(0);
+//$row_rsVariaveis=$rsVariaveis->fetch_assoc();
+
+//recordset Links Uteis
+$qLinks = "SELECT * FROM linksuteis";
+$rsLinks = $csogani->query($qLinks);
+
+if($rsLinks === FALSE) {
+    die("Erro no SQL: " . $qLinks . " Error: " . $csogani->error);
+  }
+
+$rsLinks->data_seek(0);
+//$row_rsVariaveis=$rsVariaveis->fetch_assoc();
+
+?>
+
 <!DOCTYPE html>
-<html lang="zxx">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
@@ -96,26 +149,25 @@
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__left">
                             <ul>
-                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><i class="fa fa-envelope"></i> <?= $row_rsVariaveis['email']?></li>
+                                <li><?= $row_rsVariaveis['textotopo']?></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="header__top__right">
                             <div class="header__top__right__social">
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-linkedin"></i></a>
-                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            <?php while ($row_rsRedesSociais = $rsRedesSociais->fetch_assoc()) {  ?>
+                                <a href="<?= $row_rsRedesSociais['link']?>"><i class="<?= $row_rsRedesSociais['class']?>"></i></a>
+                            <?php } ?>
                             </div>
                             <div class="header__top__right__language">
                                 <img src="img/language.png" alt="">
-                                <div>English</div>
+                                <div>Português</div>
                                 <span class="arrow_carrot-down"></span>
                                 <ul>
-                                    <li><a href="#">Spanis</a></li>
-                                    <li><a href="#">English</a></li>
+                                    <li><a href="index.php?lang=en">English</a></li>
+                                    <li><a href="index.php?lang=pt">Português</a></li>
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
@@ -130,7 +182,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                        <a href="./index.html"><img src="img/<?= $row_rsVariaveis['logotipo']?>" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -210,8 +262,8 @@
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="hero__search__phone__text">
-                                <h5>+65 11.188.888</h5>
-                                <span>support 24/7 time</span>
+                                <h5><?= $row_rsVariaveis['suporteTelefone']?></h5>
+                                <span><?= $row_rsVariaveis['suporteTexto']?></span>
                             </div>
                         </div>
                     </div>
@@ -701,49 +753,47 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./index.html"><img src="img/<?= $row_rsVariaveis['logotipo']?>" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
+                            <li><?= $row_rsVariaveis['morada']?></li>
+                            <li><?= $row_rsVariaveis['telefone']?></li>
+                            <li><?= $row_rsVariaveis['emailFooter']?></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
                     <div class="footer__widget">
-                        <h6>Useful Links</h6>
+                        <h6><?= $row_rsVariaveis['linksUteis']?></h6>
                         <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
+                        <?php
+                            $numLinks=1; 
+                            while ($row_rsLinks = $rsLinks->fetch_assoc()) {  
+                                if ($numLinks==7) {
+                                    echo "</ul><ul>";
+                                }
+                                ?>
+                            <li><a href="<?= $row_rsLinks['link']?>"><?= $row_rsLinks['texto']?></a></li>
+                        <?php 
+                            $numLinks++;
+                            } ?>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <h6><?= $row_rsVariaveis['joinNewsletter']?></h6>
+                        <p><?= $row_rsVariaveis['textoNewsletter']?></p>
                         <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
+                            <input type="text" placeholder="<?= $row_rsVariaveis['inputNewsletter']?>">
+                            <button type="submit" class="site-btn"><?= $row_rsVariaveis['buttonNewsletter']?></button>
                         </form>
                         <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        <?php 
+                        $rsRedesSociais->data_seek(0);
+                        while ($row_rsRedesSociais = $rsRedesSociais->fetch_assoc()) {  ?>
+                                <a href="<?= $row_rsRedesSociais['link']?>"><i class="<?= $row_rsRedesSociais['class']?>"></i></a>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -777,3 +827,9 @@
 </body>
 
 </html>
+<?php
+$rsVariaveis->free();
+$rsRedesSociais->free();
+$rsLinks->free();
+$csogani->close();
+?>
