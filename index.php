@@ -15,6 +15,11 @@ if (isset($_GET['lang'])) {
       $lang="pt";
     }
 
+if (!str_contains("pt,en",$lang)) {
+    setcookie("lang","pt");
+    $lang="pt";
+  }
+
 //recordset Variaveis
 $qVariaveis = "SELECT * FROM variaveis$lang";
 $rsVariaveis = $csogani->query($qVariaveis);
