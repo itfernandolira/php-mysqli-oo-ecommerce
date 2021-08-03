@@ -32,27 +32,6 @@ $rsVariaveis->data_seek(0);
 $row_rsVariaveis=$rsVariaveis->fetch_assoc();
 //$totalRows_rsCD = $rsCD->num_rows;
 
-//recordset Redes Sociais
-$qRedesSociais = "SELECT * FROM redessociais";
-$rsRedesSociais = $csogani->query($qRedesSociais);
-
-if($rsRedesSociais === FALSE) {
-    die("Erro no SQL: " . $qRedesSociais . " Error: " . $csogani->error);
-  }
-
-$rsRedesSociais->data_seek(0);
-//$row_rsVariaveis=$rsVariaveis->fetch_assoc();
-
-//recordset Links Uteis
-$qLinks = "SELECT * FROM linksuteis";
-$rsLinks = $csogani->query($qLinks);
-
-if($rsLinks === FALSE) {
-    die("Erro no SQL: " . $qLinks . " Error: " . $csogani->error);
-  }
-
-$rsLinks->data_seek(0);
-//$row_rsVariaveis=$rsVariaveis->fetch_assoc();
 
 ?>
 
@@ -116,7 +95,7 @@ $rsLinks->data_seek(0);
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="./index.html">Home</a></li>
+                <li class="active"><a href="./index.php">Home</a></li>
                 <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
@@ -147,82 +126,7 @@ $rsLinks->data_seek(0);
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <header class="header">
-        <div class="header__top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="header__top__left">
-                            <ul>
-                                <li><i class="fa fa-envelope"></i> <?= $row_rsVariaveis['email']?></li>
-                                <li><?= $row_rsVariaveis['textotopo']?></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="header__top__right">
-                            <div class="header__top__right__social">
-                            <?php while ($row_rsRedesSociais = $rsRedesSociais->fetch_assoc()) {  ?>
-                                <a href="<?= $row_rsRedesSociais['link']?>"><i class="<?= $row_rsRedesSociais['class']?>"></i></a>
-                            <?php } ?>
-                            </div>
-                            <div class="header__top__right__language">
-                                <img src="img/language.png" alt="">
-                                <div>Português</div>
-                                <span class="arrow_carrot-down"></span>
-                                <ul>
-                                    <li><a href="index.php?lang=en">English</a></li>
-                                    <li><a href="index.php?lang=pt">Português</a></li>
-                                </ul>
-                            </div>
-                            <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="header__logo">
-                        <a href="./index.html"><img src="img/<?= $row_rsVariaveis['logotipo']?>" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <nav class="header__menu">
-                        <ul>
-                            <li class="active"><a href="./index.html">Home</a></li>
-                            <li><a href="./shop-grid.html">Shop</a></li>
-                            <li><a href="#">Pages</a>
-                                <ul class="header__menu__dropdown">
-                                    <li><a href="./shop-details.html">Shop Details</a></li>
-                                    <li><a href="./shoping-cart.html">Shoping Cart</a></li>
-                                    <li><a href="./checkout.html">Check Out</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="./blog.html">Blog</a></li>
-                            <li><a href="./contact.html">Contact</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
-                        </ul>
-                        <div class="header__cart__price">item: <span>$150.00</span></div>
-                    </div>
-                </div>
-            </div>
-            <div class="humberger__open">
-                <i class="fa fa-bars"></i>
-            </div>
-        </div>
-    </header>
+    <?php require_once("header.php"); ?>
     <!-- Header Section End -->
 
     <!-- Hero Section Begin -->
@@ -752,69 +656,7 @@ $rsLinks->data_seek(0);
     <!-- Blog Section End -->
 
     <!-- Footer Section Begin -->
-    <footer class="footer spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__about__logo">
-                            <a href="./index.html"><img src="img/<?= $row_rsVariaveis['logotipo']?>" alt=""></a>
-                        </div>
-                        <ul>
-                            <li><?= $row_rsVariaveis['morada']?></li>
-                            <li><?= $row_rsVariaveis['telefone']?></li>
-                            <li><?= $row_rsVariaveis['emailFooter']?></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6><?= $row_rsVariaveis['linksUteis']?></h6>
-                        <ul>
-                        <?php
-                            $numLinks=1; 
-                            while ($row_rsLinks = $rsLinks->fetch_assoc()) {  
-                                if ($numLinks==7) {
-                                    echo "</ul><ul>";
-                                }
-                                ?>
-                            <li><a href="<?= $row_rsLinks['link']?>"><?= $row_rsLinks['texto']?></a></li>
-                        <?php 
-                            $numLinks++;
-                            } ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6><?= $row_rsVariaveis['joinNewsletter']?></h6>
-                        <p><?= $row_rsVariaveis['textoNewsletter']?></p>
-                        <form action="#">
-                            <input type="text" placeholder="<?= $row_rsVariaveis['inputNewsletter']?>">
-                            <button type="submit" class="site-btn"><?= $row_rsVariaveis['buttonNewsletter']?></button>
-                        </form>
-                        <div class="footer__widget__social">
-                        <?php 
-                        $rsRedesSociais->data_seek(0);
-                        while ($row_rsRedesSociais = $rsRedesSociais->fetch_assoc()) {  ?>
-                                <a href="<?= $row_rsRedesSociais['link']?>"><i class="<?= $row_rsRedesSociais['class']?>"></i></a>
-                            <?php } ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="img/payment-item.png" alt=""></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php require_once("footer.php"); ?>
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
