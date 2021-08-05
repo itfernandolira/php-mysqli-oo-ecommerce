@@ -32,6 +32,17 @@ $rsVariaveis->data_seek(0);
 $row_rsVariaveis=$rsVariaveis->fetch_assoc();
 //$totalRows_rsCD = $rsCD->num_rows;
 
+//recordset Categorias
+$qCategorias = "SELECT * FROM categorias$lang";
+$rsCategorias = $csogani->query($qCategorias);
+
+if($rsCategorias === FALSE) {
+    die("Erro no SQL: " . $qCategorias . " Error: " . $csogani->error);
+  }
+
+$rsCategorias->data_seek(0);
+//$row_rsVariaveis=$rsVariaveis->fetch_assoc();
+//$totalRows_rsCD = $rsCD->num_rows;
 
 ?>
 
@@ -140,17 +151,10 @@ $row_rsVariaveis=$rsVariaveis->fetch_assoc();
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <?php while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { 
+                                if ($row_rsCategorias['menu']==true) { ?>
+                            <li><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></li>
+                            <?php } } ?>
                         </ul>
                     </div>
                 </div>
@@ -195,31 +199,16 @@ $row_rsVariaveis=$rsVariaveis->fetch_assoc();
         <div class="container">
             <div class="row">
                 <div class="categories__slider owl-carousel">
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-1.jpg">
-                            <h5><a href="#">Fresh Fruit</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-2.jpg">
-                            <h5><a href="#">Dried Fruit</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-3.jpg">
-                            <h5><a href="#">Vegetables</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-4.jpg">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg" data-setbg="img/categories/cat-5.jpg">
-                            <h5><a href="#">drink fruits</a></h5>
-                        </div>
-                    </div>
+                    <?php 
+                        $rsCategorias->data_seek(0); 
+                        while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { 
+                            if ($row_rsCategorias['scroll']==true) { ?>
+                                <div class="col-lg-3">
+                                    <div class="categories__item set-bg" data-setbg="img/categories/<?= $row_rsCategorias['imagem']?>">
+                                        <h5><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></h5>
+                                    </div>
+                                </div>
+                    <?php } }?>
                 </div>
             </div>
         </div>

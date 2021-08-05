@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 30-Jul-2021 às 22:56
+-- Tempo de geração: 05-Ago-2021 às 22:56
 -- Versão do servidor: 10.4.19-MariaDB
 -- versão do PHP: 8.0.7
 
@@ -20,6 +20,34 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `ogani`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `categoriaspt`
+--
+
+CREATE TABLE `categoriaspt` (
+  `id` int(11) NOT NULL,
+  `categoria` varchar(50) NOT NULL,
+  `imagem` varchar(80) NOT NULL,
+  `menu` tinyint(1) NOT NULL DEFAULT 1,
+  `scroll` tinyint(1) NOT NULL DEFAULT 0,
+  `destaque` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `categoriaspt`
+--
+
+INSERT INTO `categoriaspt` (`id`, `categoria`, `imagem`, `menu`, `scroll`, `destaque`) VALUES
+(1, 'Fruta', 'cat-1.jpg', 1, 1, 1),
+(2, 'Frutos Secos', 'cat-2.jpg', 1, 1, 1),
+(3, 'Vegetais', 'cat-3.jpg', 1, 1, 1),
+(4, 'Sumos', 'cat-4.jpg', 1, 1, 0),
+(5, 'Carne', 'cat-5.jpg', 1, 1, 0),
+(6, 'Iogurtes', '', 1, 0, 0),
+(7, 'Ovos', '', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -127,6 +155,12 @@ INSERT INTO `variaveispt` (`id`, `email`, `textotopo`, `logotipo`, `morada`, `te
 --
 
 --
+-- Índices para tabela `categoriaspt`
+--
+ALTER TABLE `categoriaspt`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices para tabela `linksuteis`
 --
 ALTER TABLE `linksuteis`
@@ -153,6 +187,12 @@ ALTER TABLE `variaveispt`
 --
 -- AUTO_INCREMENT de tabelas despejadas
 --
+
+--
+-- AUTO_INCREMENT de tabela `categoriaspt`
+--
+ALTER TABLE `categoriaspt`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `linksuteis`
