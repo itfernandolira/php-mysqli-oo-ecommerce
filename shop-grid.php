@@ -54,13 +54,25 @@ if($rsSaleOff === FALSE) {
 
 $rsSaleOff->data_seek(0);
 
-//recordset Produtos
+//Paginação
+//Verifica numero de página atual
+if (isset($_GET['pageno'])) {
+    $pageno = $_GET['pageno'];
+} else {
+    $pageno = 1;
+}
+
+//define o número de registos por página e o offset
+$no_of_records_per_page = 6;
+$offset = ($pageno-1) * $no_of_records_per_page;
+
+//conta o número de registos
 if (isset($_GET['id'])) {
     $id=$_GET['id'];
-    $qProdutos="select produtos$lang.* from produtos$lang where categoria='$id'";
+    $qProdutos="select count(*) as total from produtos$lang where categoria='$id'";
 }
 else 
-    $qProdutos="select produtos$lang.* from produtos$lang";
+    $qProdutos="select count(*) as total from produtos$lang";
     
 $rsProdutos = $csogani->query($qProdutos);
 
@@ -69,7 +81,29 @@ if($rsProdutos === FALSE) {
 }
 
 $rsProdutos->data_seek(0);
-$totalRows_rsProdutos = $rsProdutos->num_rows;
+$row_rsProdutos = $rsProdutos->fetch_assoc();
+$totalRows_rsProdutos = $row_rsProdutos['total'];
+$rsProdutos->free();
+
+//Define o número total de páginas necessárias 
+$total_pages = ceil($totalRows_rsProdutos / $no_of_records_per_page);
+
+//recordset Produtos
+if (isset($_GET['id'])) {
+    $id=$_GET['id'];
+    $qProdutos="select produtos$lang.* from produtos$lang where categoria='$id' LIMIT $offset, $no_of_records_per_page";
+}
+else 
+    $qProdutos="select produtos$lang.* from produtos$lang LIMIT $offset, $no_of_records_per_page";
+    
+$rsProdutos = $csogani->query($qProdutos);
+
+if($rsProdutos === FALSE) {
+    die("Erro no SQL: " . $qProdutos . " Error: " . $csogani->error);
+}
+
+$rsProdutos->data_seek(0);
+//$totalRows_rsProdutos = $rsProdutos->num_rows;
 ?>
 
 <!DOCTYPE html>
@@ -469,10 +503,29 @@ $totalRows_rsProdutos = $rsProdutos->num_rows;
                         <?php } ?>
                     </div>
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        <?php 
+                            //só existe paginação quando o número de páginas for superior a 1
+                            if ($total_pages>1) { ?>
+                            <?php 
+                                //verifica o parametro Id para concatenar com o link da paginação
+                                if (isset($_GET['id'])) 
+                                    $link="&id=$id";
+                                else
+                                    $link="";?>
+                            <?php 
+                                //só mostra a seta anterior se não estiver na primeira página
+                                if ($pageno!=1) {?>
+                                <a href="?pageno=<?=($pageno-1).$link?>"><i class="fa fa-long-arrow-left"></i></a>
+                            <?php } ?>
+                            <?php for ($i=1;$i<=$total_pages;$i++) {?>
+                            <a href="?pageno=<?=($i).$link?>"><?= $i ?></a>
+                            <?php } 
+                            //só mostra a seta seguinte se não estiver na última página
+                            if ($pageno!=$total_pages) {
+                            ?>
+                            <a href="?pageno=<?=($pageno+1).$link?>"><i class="fa fa-long-arrow-right"></i></a>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
