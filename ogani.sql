@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 05-Ago-2021 às 22:56
+-- Tempo de geração: 06-Ago-2021 às 18:02
 -- Versão do servidor: 10.4.19-MariaDB
 -- versão do PHP: 8.0.7
 
@@ -33,21 +33,22 @@ CREATE TABLE `categoriaspt` (
   `imagem` varchar(80) NOT NULL,
   `menu` tinyint(1) NOT NULL DEFAULT 1,
   `scroll` tinyint(1) NOT NULL DEFAULT 0,
-  `destaque` tinyint(1) NOT NULL DEFAULT 0
+  `destaque` tinyint(1) NOT NULL DEFAULT 0,
+  `slug` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `categoriaspt`
 --
 
-INSERT INTO `categoriaspt` (`id`, `categoria`, `imagem`, `menu`, `scroll`, `destaque`) VALUES
-(1, 'Fruta', 'cat-1.jpg', 1, 1, 1),
-(2, 'Frutos Secos', 'cat-2.jpg', 1, 1, 1),
-(3, 'Vegetais', 'cat-3.jpg', 1, 1, 1),
-(4, 'Sumos', 'cat-4.jpg', 1, 1, 0),
-(5, 'Carne', 'cat-5.jpg', 1, 1, 0),
-(6, 'Iogurtes', '', 1, 0, 0),
-(7, 'Ovos', '', 0, 0, 0);
+INSERT INTO `categoriaspt` (`id`, `categoria`, `imagem`, `menu`, `scroll`, `destaque`, `slug`) VALUES
+(1, 'Fruta', 'cat-1.jpg', 1, 1, 1, 'fruta'),
+(2, 'Frutos Secos', 'cat-2.jpg', 1, 1, 1, 'frutos-secos'),
+(3, 'Vegetais', 'cat-3.jpg', 1, 1, 0, 'vegetais'),
+(4, 'Sumos', 'cat-4.jpg', 1, 1, 0, 'sumos'),
+(5, 'Carne', 'cat-5.jpg', 1, 1, 1, 'carne'),
+(6, 'Iogurtes', '', 1, 0, 0, 'iogurtes'),
+(7, 'Ovos', '', 0, 0, 0, 'ovos');
 
 -- --------------------------------------------------------
 
@@ -74,6 +75,39 @@ INSERT INTO `linksuteis` (`id`, `link`, `texto`) VALUES
 (6, '#', 'Link6'),
 (7, '#', 'Link 7'),
 (8, '#', 'Link 8');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `produtospt`
+--
+
+CREATE TABLE `produtospt` (
+  `referencia` varchar(25) NOT NULL,
+  `designacao` varchar(100) NOT NULL,
+  `imagem` varchar(100) NOT NULL,
+  `preco` double(4,2) NOT NULL,
+  `categoria` int(11) NOT NULL,
+  `destaque` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `produtospt`
+--
+
+INSERT INTO `produtospt` (`referencia`, `designacao`, `imagem`, `preco`, `categoria`, `destaque`) VALUES
+('product-1', 'Carne de Vitela', 'product-1.jpg', 16.00, 5, 1),
+('product-10', 'Frango frito', 'product-10.jpg', 3.00, 5, 0),
+('product-11', 'Sumo laranja', 'product-11.jpg', 2.00, 4, 1),
+('product-12', 'Cabaz de fruta', 'product-12.jpg', 6.90, 1, 1),
+('product-2', 'Bananas', 'product-2.jpg', 2.00, 1, 0),
+('product-3', 'Goiaba', 'product-3.jpg', 3.40, 1, 1),
+('product-4', 'Uvas', 'product-4.jpg', 1.70, 1, 0),
+('product-5', 'Hamburger', 'product-5.jpg', 7.50, 5, 1),
+('product-6', 'Manga', 'product-6.jpg', 2.00, 1, 1),
+('product-7', 'Melancia', 'product-7.jpg', 0.80, 1, 1),
+('product-8', 'Maçãs', 'product-8.jpg', 1.50, 1, 1),
+('product-9', 'Uvas Passas', 'product-9.jpg', 4.00, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -167,6 +201,13 @@ ALTER TABLE `linksuteis`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `produtospt`
+--
+ALTER TABLE `produtospt`
+  ADD PRIMARY KEY (`referencia`),
+  ADD KEY `FK_categoria` (`categoria`);
+
+--
 -- Índices para tabela `redessociais`
 --
 ALTER TABLE `redessociais`
@@ -205,6 +246,16 @@ ALTER TABLE `linksuteis`
 --
 ALTER TABLE `redessociais`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Restrições para despejos de tabelas
+--
+
+--
+-- Limitadores para a tabela `produtospt`
+--
+ALTER TABLE `produtospt`
+  ADD CONSTRAINT `FK_categoria` FOREIGN KEY (`categoria`) REFERENCES `categoriaspt` (`id`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
