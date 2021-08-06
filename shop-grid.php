@@ -151,17 +151,10 @@ $rsCategorias->data_seek(0);
                             <span>All departments</span>
                         </div>
                         <ul>
-                            <li><a href="#">Fresh Meat</a></li>
-                            <li><a href="#">Vegetables</a></li>
-                            <li><a href="#">Fruit & Nut Gifts</a></li>
-                            <li><a href="#">Fresh Berries</a></li>
-                            <li><a href="#">Ocean Foods</a></li>
-                            <li><a href="#">Butter & Eggs</a></li>
-                            <li><a href="#">Fastfood</a></li>
-                            <li><a href="#">Fresh Onion</a></li>
-                            <li><a href="#">Papayaya & Crisps</a></li>
-                            <li><a href="#">Oatmeal</a></li>
-                            <li><a href="#">Fresh Bananas</a></li>
+                            <?php while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { 
+                                if ($row_rsCategorias['menu']==true) { ?>
+                            <li><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></li>
+                            <?php } } ?>
                         </ul>
                     </div>
                 </div>
@@ -220,17 +213,13 @@ $rsCategorias->data_seek(0);
                         <div class="sidebar__item">
                             <h4>Department</h4>
                             <ul>
-                                <li><a href="#">Fresh Meat</a></li>
-                                <li><a href="#">Vegetables</a></li>
-                                <li><a href="#">Fruit & Nut Gifts</a></li>
-                                <li><a href="#">Fresh Berries</a></li>
-                                <li><a href="#">Ocean Foods</a></li>
-                                <li><a href="#">Butter & Eggs</a></li>
-                                <li><a href="#">Fastfood</a></li>
-                                <li><a href="#">Fresh Onion</a></li>
-                                <li><a href="#">Papayaya & Crisps</a></li>
-                                <li><a href="#">Oatmeal</a></li>
-                            </ul>
+                            <?php 
+                            $rsCategorias->data_seek(0);
+                            while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { 
+                                if ($row_rsCategorias['menu']==true) { ?>
+                            <li><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></li>
+                            <?php } } ?>
+                        </ul>
                         </div>
                         <div class="sidebar__item">
                             <h4>Price</h4>
