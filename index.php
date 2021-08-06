@@ -163,7 +163,7 @@ $rsProdDestaque->data_seek(0);
                         <ul>
                             <?php while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { 
                                 if ($row_rsCategorias['menu']==true) { ?>
-                            <li><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></li>
+                            <li><a href="shop-grid.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></li>
                             <?php } } ?>
                         </ul>
                     </div>
@@ -215,7 +215,7 @@ $rsProdDestaque->data_seek(0);
                             if ($row_rsCategorias['scroll']==true) { ?>
                                 <div class="col-lg-3">
                                     <div class="categories__item set-bg" data-setbg="img/categories/<?= $row_rsCategorias['imagem']?>">
-                                        <h5><a href="shop-grip.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></h5>
+                                        <h5><a href="shop-grid.php?id=<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></a></h5>
                                     </div>
                                 </div>
                     <?php } }?>
