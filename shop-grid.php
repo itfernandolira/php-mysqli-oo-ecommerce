@@ -129,9 +129,10 @@ $rsProdutos->data_seek(0);
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script type="text/javascript" src="functions.js"></script>
 </head>
 
-<body>
+<body onload="onload()">
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -446,7 +447,7 @@ $rsProdutos->data_seek(0);
                                             <div class="product__discount__percent">-<?= $row_rsSaleOff['desconto']?>%</div>
                                             <ul class="product__item__pic__hover">
                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                                <li><a href="javascript:addToCart('<?= $row_rsSaleOff['referencia']?>',<?= $row_rsSaleOff['preco']?>)"><i class="fa fa-shopping-cart"></i></a></li>
                                             </ul>
                                         </div>
                                         <div class="product__discount__item__text">
@@ -491,7 +492,7 @@ $rsProdutos->data_seek(0);
                                 <div class="product__item__pic set-bg" data-setbg="img/product/<?= $row_rsProdutos['imagem']?>">
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a href="javascript:addToCart('<?= $row_rsProdutos['referencia']?>',<?= $row_rsProdutos['preco']?>)"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
