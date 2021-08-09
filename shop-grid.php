@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
+session_start();
 require_once("connection/connection.php");
 
 if (isset($_GET['lang'])) {
@@ -255,7 +256,7 @@ $rsProdutos->data_seek(0);
                     <div class="breadcrumb__text">
                         <h2>Organi Shop</h2>
                         <div class="breadcrumb__option">
-                            <a href="./index.html">Home</a>
+                            <a href="./index.php">Home</a>
                             <span>Shop</span>
                         </div>
                     </div>

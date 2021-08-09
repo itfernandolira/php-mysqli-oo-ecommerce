@@ -26,7 +26,7 @@ function onload() {
             var jsonResponse = JSON.parse(data);
             //console.log(jsonResponse["numProds"]);
             document.getElementById("numProds").innerHTML = jsonResponse["numProds"];
-            document.getElementById("total").innerHTML = jsonResponse["total"]+" €";
+            document.getElementById("total").innerHTML = jsonResponse["total"].toFixed(2)+" €";
         }
     };
     xmlhttp.open("GET", "onload.php", true);
