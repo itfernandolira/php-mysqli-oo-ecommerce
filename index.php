@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
+session_start();
 require_once("connection/connection.php");
 
 if (isset($_GET['lang'])) {
@@ -79,9 +80,47 @@ $rsProdDestaque->data_seek(0);
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <script>
+        function addToCart(referencia,preco) {
+
+            //alert(referencia);
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data=this.responseText;
+                    var jsonResponse = JSON.parse(data);
+                    //console.log(jsonResponse["numProds"]);
+                    //atualiza o numero de produtos e total a pagar
+                    document.getElementById("numProds").innerHTML = jsonResponse["numProds"];
+                    document.getElementById("total").innerHTML = jsonResponse["total"]+" €";
+                }
+            };
+            xmlhttp.open("POST", "addtocart.php", true);
+            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xmlhttp.send("referencia="+referencia+"&preco="+preco);
+
+        }
+        function onload() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var data=this.responseText;
+                    var jsonResponse = JSON.parse(data);
+                    //console.log(jsonResponse["numProds"]);
+                    document.getElementById("numProds").innerHTML = jsonResponse["numProds"];
+                    document.getElementById("total").innerHTML = jsonResponse["total"]+" €";
+                }
+            };
+            xmlhttp.open("GET", "onload.php", true);
+            xmlhttp.send();
+        }
+        </script>
+
+
 </head>
 
-<body>
+<body onload="onload()">
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -253,7 +292,7 @@ $rsProdDestaque->data_seek(0);
                         <div class="featured__item__pic set-bg" data-setbg="img/product/<?= $row_rsProdDestaque['imagem']?>">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li><a href="javascript:addToCart('<?= $row_rsProdDestaque['referencia']?>',<?= $row_rsProdDestaque['preco']?>)"><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
