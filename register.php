@@ -1,9 +1,6 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 session_start();
-//Verifica se o utilizador já fez login. Se não fez, redireciona para a página login.php
-if (!isset($_SESSION['loginDone'])||$_SESSION['loginDone']!=true) 
-    header("Location: login.php");
 
 require_once("connection/connection.php");
 
@@ -58,6 +55,86 @@ if($rsProdDestaque === FALSE) {
   }
 
 $rsProdDestaque->data_seek(0);
+
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+
+// define variables and set to empty values
+$emailErr = $passwordErr = $nomeErr = $ruaErr = $localidadeErr="";
+$email = $password = $nome = $rua = $localidade = "";
+$error=false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty($_POST["email"])) {
+        $emailErr = "Tem de indicar o e-mail!";
+        $error=true;
+      } else {
+        $email = test_input($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr="Tem de indicar um e-mail válido!";
+            $error=true;
+        }
+    }
+
+    if (empty($_POST["password"])) {
+        $passwordErr = "Tem de indicar a password!";
+        $error=true;
+      } else {
+        $password = $_POST["password"];
+        if (strlen($password)<6) {
+            $passwordErr="A password tem de ter 6 caracteres no mínimo!";
+            $error=true;
+        }
+    }
+
+    if (empty($_POST["nome"])) {
+        $nomeErr = "Tem de indicar o nome!";
+        $error=true;
+      } else {
+        $nome = test_input($_POST["nome"]);
+    }
+
+    if (empty($_POST["rua"])) {
+        $ruaErr = "Tem de indicar a rua!";
+        $error=true;
+      } else {
+        $rua = test_input($_POST["rua"]);
+    }
+
+    if (empty($_POST["localidade"])) {
+        $localidadeErr = "Tem de indicar a localidade!";
+        $error=true;
+      } else {
+        $localidade = test_input($_POST["localidade"]);
+    }
+
+    if (!$error) {
+        $qRegisto = "SELECT * FROM users$lang WHERE email='$email'";
+        $rsRegisto = $csogani->query($qRegisto);
+
+        if($rsRegisto === FALSE) {
+            die("Erro no SQL: " . $qCategorias . " Error: " . $csogani->error);
+        }
+
+        if  ($rsRegisto->num_rows>0) {
+            $emailErr="O e-mail indicado já se encontra registado!";
+        }
+        else {
+            $qUser="insert into users$lang values('$email',md5('$password'),'$nome','$rua','$localidade')";
+            if ($csogani->query($qUser)===false) {
+                die("Erro no SQL: " . $qUser . " Error: " . $csogani->error);
+            }
+            else {
+                header("Location: login.php");
+            }
+        }
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -207,10 +284,10 @@ $rsProdDestaque->data_seek(0);
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Checkout</h2>
+                        <h2>Register</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.php">Home</a>
-                            <span>Checkout</span>
+                            <span>Register</span>
                         </div>
                     </div>
                 </div>
@@ -222,128 +299,30 @@ $rsProdDestaque->data_seek(0);
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h6><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click here</a> to enter your code
-                    </h6>
-                </div>
-            </div>
             <div class="checkout__form">
-                <h4>Billing Details</h4>
-                <form action="#">
+                <h4>Registo</h4>
+                <form method="POST" action="register.php">
                     <div class="row">
-                        <div class="col-lg-8 col-md-6">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Fist Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
+                        <div class="col-lg-12 col-md-12">
+                                <div class="checkout__input">
+                                    <p>E-mail<span>*</span><span style="color: red;"><?= $emailErr?></span></p>
+                                    <input type="email" name="email" value="<?= $email?>" required>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
+                           
+                                <div class="checkout__input">
+                                    <p>Password<span>*</span><span style="color: red;"><?= $passwordErr?></span></p>
+                                    <input type="password" name="password" value="<?= $password?>" required>
                                 </div>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text">
-                                    </div>
+                                <div class="checkout__input">
+                                    <p>Nome<span>*</span><span style="color: red;"><?= $nomeErr?></span></p>
+                                    <input type="text" name="nome" value="<?= $nome?>" required>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc">
-                                    Create an account?
-                                    <input type="checkbox" id="acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
                             <div class="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="text">
+                                <p>Morada<span>*</span><span style="color: red;"><?= $ruaErr?></span><span style="color: red;"><?= $localidadeErr?></span></p>
+                                <input type="text" placeholder="Rua" name="rua" value="<?= $rua?>" class="checkout__input__add" required> 
+                                <input type="text" placeholder="Localidade" name="localidade" value="<?= $localidade?>" required>
                             </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Ship to a different address?
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Order notes<span>*</span></p>
-                                <input type="text"
-                                    placeholder="Notes about your order, e.g. special notes for delivery.">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6">
-                            <div class="checkout__order">
-                                <h4>Your Order</h4>
-                                <div class="checkout__order__products">Products <span>Total</span></div>
-                                <ul>
-                                    <li>Vegetable’s Package <span>$75.99</span></li>
-                                    <li>Fresh Vegetable <span>$151.99</span></li>
-                                    <li>Organic Bananas <span>$53.99</span></li>
-                                </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div>
-                                <div class="checkout__order__total">Total <span>$750.99</span></div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="acc-or">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-or">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
-                                <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__input__checkbox">
-                                    <label for="paypal">
-                                        Paypal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
-                            </div>
+                            <button type="submit" class="site-btn" style="width: 100%;">SUBMETER</button>
                         </div>
                     </div>
                 </form>

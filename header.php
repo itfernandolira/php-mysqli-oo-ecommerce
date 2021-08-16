@@ -78,7 +78,11 @@ $rsRedesSociais->data_seek(0);
                                 </ul>
                             </div>
                             <div class="header__top__right__auth">
-                                <a href="#"><i class="fa fa-user"></i> Login</a>
+                                <?php if (!isset($_SESSION['loginDone'])||$_SESSION['loginDone']!=true) {?>
+                                    <a href="login.php"><i class="fa fa-user"></i> Login</a>
+                                <?php } else { ?>
+                                    <a href="logout.php"><i class="fa fa-user"></i> Logout</a>
+                                <?php } ?>
                             </div>
                         </div>
                     </div>
