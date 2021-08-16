@@ -237,7 +237,7 @@ $rsProdDestaque->data_seek(0);
                                 $aPagar=0;
                             ?>
                             <tbody>
-                                <?php 
+                                <?php
                                     foreach ($carrinho as &$item) {
                                         $qProduto="Select produtos$lang.* from produtos$lang where referencia='".$item['ref']."'";
                                         $rsProduto=$csogani->query($qProduto);
@@ -245,7 +245,7 @@ $rsProdDestaque->data_seek(0);
                                         $row_rsProduto=$rsProduto->fetch_assoc();
                                         $aPagar=$aPagar+($item['qtd']*$row_rsProduto['preco']);
                                 ?>
-                                <tr>
+                                <tr id="<?= $row_rsProduto['referencia']?>">
                                     <td class="shoping__cart__item">
                                         <img src="img/product/<?= $row_rsProduto['imagem'] ?>" alt="" width="100px">
                                         <h5><?= $row_rsProduto['designacao'] ?></h5>
@@ -264,7 +264,7 @@ $rsProdDestaque->data_seek(0);
                                         <?= (number_format($row_rsProduto['preco']*$item['qtd'],2)) ?> €
                                     </td>
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                        <a href="javascript:deleteFromCart('<?= $row_rsProduto['referencia']?>')"><span class="icon_close"></span></a>
                                     </td>
                                 </tr>
                                 <?php } 

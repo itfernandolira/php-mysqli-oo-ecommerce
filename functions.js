@@ -18,6 +18,23 @@ function addToCart(referencia,preco) {
     xmlhttp.send("referencia="+referencia+"&preco="+preco);
 
 }
+
+function deleteFromCart(referencia) {
+        //alert(referencia);
+
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var data=this.responseText;
+                var hideLine = document.getElementById(referencia);
+                hideLine.style.display = "none";
+            }
+        };
+        xmlhttp.open("POST", "deletefromcart.php", true);
+        xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xmlhttp.send("referencia="+referencia);
+}
+
 function onload() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
