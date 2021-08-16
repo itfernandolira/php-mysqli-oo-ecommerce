@@ -59,6 +59,17 @@ if($rsProdDestaque === FALSE) {
 
 $rsProdDestaque->data_seek(0);
 
+//recordset Utilizador
+$qUser = "SELECT * FROM users$lang  WHERE email='".$_SESSION['usernameLog']."'";
+$rsUser = $csogani->query($qUser);
+
+if($rsUser === FALSE) {
+    die("Erro no SQL: " . $qUser . " Error: " . $csogani->error);
+  }
+
+$rsUser->data_seek(0);
+$row_rsUser=$rsUser->fetch_assoc();
+
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -229,120 +240,70 @@ $rsProdDestaque->data_seek(0);
                 </div>
             </div>
             <div class="checkout__form">
-                <h4>Billing Details</h4>
-                <form action="#">
+                <h4>Detalhes</h4>
+                <form  method="POST" action="request.php">
                     <div class="row">
                         <div class="col-lg-8 col-md-6">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Fist Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Last Name<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
+                            <div class="checkout__input">
+                                <p>E-mail</p>
+                                <input type="text" readonly value="<?= $row_rsUser['email'] ?>">
                             </div>
                             <div class="checkout__input">
-                                <p>Country<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Address<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add">
-                                <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Town/City<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Country/State<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input">
-                                <p>Postcode / ZIP<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Phone<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p>Email<span>*</span></p>
-                                        <input type="text">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc">
-                                    Create an account?
-                                    <input type="checkbox" id="acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
-                            <div class="checkout__input">
-                                <p>Account Password<span>*</span></p>
-                                <input type="text">
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="diff-acc">
-                                    Ship to a different address?
-                                    <input type="checkbox" id="diff-acc">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input">
-                                <p>Order notes<span>*</span></p>
-                                <input type="text"
-                                    placeholder="Notes about your order, e.g. special notes for delivery.">
+                                <p>Dados</p>
+                                <input type="text" class="checkout__input__add" readonly value="<?= $row_rsUser['nome'] ?>">
+                                <input type="text" readonly value="<?= $row_rsUser['rua'] ?>">
+                                <input type="text" readonly value="<?= $row_rsUser['localidade'] ?>">
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6">
                             <div class="checkout__order">
-                                <h4>Your Order</h4>
-                                <div class="checkout__order__products">Products <span>Total</span></div>
-                                <ul>
-                                    <li>Vegetable’s Package <span>$75.99</span></li>
-                                    <li>Fresh Vegetable <span>$151.99</span></li>
-                                    <li>Organic Bananas <span>$53.99</span></li>
+                                <h4>A sua encomenda</h4>
+                                <div class="checkout__order__products">Produtos <span>Total</span></div>
+                                <?php
+                                if (isset($_COOKIE['cart'])) {
+                                    $carrinho=unserialize($_COOKIE['cart']);
+                                    $aPagar=0;
+                                ?>
+                                <ul><?php
+                                    foreach ($carrinho as &$item) {
+                                        $qProduto="Select produtos$lang.* from produtos$lang where referencia='".$item['ref']."'";
+                                        $rsProduto=$csogani->query($qProduto);
+                                        $rsProduto->data_seek(0);
+                                        $row_rsProduto=$rsProduto->fetch_assoc();
+                                        $aPagar=$aPagar+($item['qtd']*$row_rsProduto['preco']);
+                                    ?>
+                                    <li><?= $row_rsProduto['designacao']?> <span><?= (number_format($row_rsProduto['preco']*$item['qtd'],2)) ?> €</span></li>
+                                    <?php 
+                                        $rsProduto->free();
+                                        } 
+                                        
+                                    ?>
                                 </ul>
-                                <div class="checkout__order__subtotal">Subtotal <span>$750.99</span></div>
-                                <div class="checkout__order__total">Total <span>$750.99</span></div>
+                                <?php } ?>
+                                <div class="checkout__order__subtotal">Subtotal <span><?= number_format($aPagar,2) ?> €</span></div>
+                                <div class="checkout__order__total">Total <span><?= number_format($aPagar,2) ?> €</span></div>
                                 <div class="checkout__input__checkbox">
-                                    <label for="acc-or">
-                                        Create an account?
-                                        <input type="checkbox" id="acc-or">
+                                    <label for="mbway">
+                                        MB WAY
+                                        <input type="radio" id="mbway" name="payment" value="mbway" checked>
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                    ut labore et dolore magna aliqua.</p>
                                 <div class="checkout__input__checkbox">
-                                    <label for="payment">
-                                        Check Payment
-                                        <input type="checkbox" id="payment">
+                                    <label for="visa">
+                                        VISA / Mastercard
+                                        <input type="radio" id="visa" name="payment" value="visa">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
                                 <div class="checkout__input__checkbox">
                                     <label for="paypal">
                                         Paypal
-                                        <input type="checkbox" id="paypal">
+                                        <input type="radio" id="paypal" name="payment" value="paypal">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
-                                <button type="submit" class="site-btn">PLACE ORDER</button>
+                                <button type="submit" class="site-btn">ENCOMENDAR</button>
                             </div>
                         </div>
                     </div>
@@ -376,5 +337,6 @@ $rsVariaveis->free();
 $rsRedesSociais->free();
 $rsProdDestaque->free();
 $rsLinks->free();
+$rsUser->free();
 $csogani->close();
 ?>

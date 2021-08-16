@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 session_start();
+
 require_once("connection/connection.php");
 
 if (isset($_GET['lang'])) {
@@ -54,6 +55,7 @@ if($rsProdDestaque === FALSE) {
   }
 
 $rsProdDestaque->data_seek(0);
+
 
 ?>
 <!DOCTYPE html>
@@ -186,7 +188,7 @@ $rsProdDestaque->data_seek(0);
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="hero__search__phone__text">
-                            <h5><?= $row_rsVariaveis['suporteTelefone']?></h5>
+                                <h5><?= $row_rsVariaveis['suporteTelefone']?></h5>
                                 <span><?= $row_rsVariaveis['suporteTexto']?></span>
                             </div>
                         </div>
@@ -203,10 +205,10 @@ $rsProdDestaque->data_seek(0);
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
-                        <h2>Shopping Cart</h2>
+                        <h2>Encomenda realizada com sucesso</h2>
                         <div class="breadcrumb__option">
                             <a href="./index.php">Home</a>
-                            <span>Shopping Cart</span>
+                            <span>Sucesso</span>
                         </div>
                     </div>
                 </div>
@@ -215,96 +217,15 @@ $rsProdDestaque->data_seek(0);
     </section>
     <!-- Breadcrumb Section End -->
 
-    <!-- Shoping Cart Section Begin -->
-    <section class="shoping-cart spad">
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__table" id="carrinho">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="shoping__product">Products</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <?php
-                            if (isset($_COOKIE['cart'])) {
-                                $carrinho=unserialize($_COOKIE['cart']);
-                                $aPagar=0;
-                            ?>
-                            <tbody>
-                                <?php
-                                    foreach ($carrinho as &$item) {
-                                        $qProduto="Select produtos$lang.* from produtos$lang where referencia='".$item['ref']."'";
-                                        $rsProduto=$csogani->query($qProduto);
-                                        $rsProduto->data_seek(0);
-                                        $row_rsProduto=$rsProduto->fetch_assoc();
-                                        $aPagar=$aPagar+($item['qtd']*$row_rsProduto['preco']);
-                                ?>
-                                <tr id="<?= $row_rsProduto['referencia']?>">
-                                    <td class="shoping__cart__item">
-                                        <img src="img/product/<?= $row_rsProduto['imagem'] ?>" alt="" width="100px">
-                                        <h5><?= $row_rsProduto['designacao'] ?></h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                    <?= $row_rsProduto['preco'] ?> €
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <span class="dec qtybtn">-</span>
-                                                <input type="text" value="<?= $item['qtd']?>" name="<?= $row_rsProduto['referencia']?>">
-                                                <span class="inc qtybtn">+</span>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        <?= (number_format($row_rsProduto['preco']*$item['qtd'],2)) ?> €
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <a href="javascript:deleteFromCart('<?= $row_rsProduto['referencia']?>')"><span class="icon_close"></span></a>
-                                    </td>
-                                </tr>
-                                <?php 
-                                    $rsProduto->free();    
-                                    }   
-                                ?>
-                            </tbody>
-                            <?php } ?>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="shoping__continue">
-                        <div class="shoping__discount">
-                            <h5>Discount Codes</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Enter your coupon code">
-                                <button type="submit" class="site-btn">APPLY COUPON</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="shoping__checkout">
-                        <h5>Cart Total</h5>
-                        <ul>
-                            <li>Subtotal <span><?= number_format($aPagar,2) ?> €</span></li>
-                            <li>Total <span><?= number_format($aPagar,2) ?> €</span></li>
-                        </ul>
-                        <a href="checkout.php" class="primary-btn">PROCEED TO CHECKOUT</a>
-                    </div>
-                </div>
+            <div class="checkout__form">
+                <h4>Encomenda nº <?= $_GET['numEncomenda']?> realizada com sucesso!</h4>
             </div>
         </div>
     </section>
-    <!-- Shoping Cart Section End -->
+    <!-- Checkout Section End -->
 
     <!-- Footer Section Begin -->
     <?php require_once("footer.php"); ?>
@@ -320,6 +241,7 @@ $rsProdDestaque->data_seek(0);
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+ 
 
 </body>
 
