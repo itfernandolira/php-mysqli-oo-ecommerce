@@ -35,6 +35,18 @@ function deleteFromCart(referencia) {
         xmlhttp.send("referencia="+referencia);
 }
 
+function updateCart(referencia,qty) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var data=this.responseText;
+        }
+    };
+    xmlhttp.open("POST", "updatecart.php", true);
+    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xmlhttp.send("referencia="+referencia+"&qty="+qty);
+}
+
 function onload() {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {

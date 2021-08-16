@@ -256,7 +256,9 @@ $rsProdDestaque->data_seek(0);
                                     <td class="shoping__cart__quantity">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="<?= $item['qtd']?>">
+                                                <span class="dec qtybtn">-</span>
+                                                <input type="text" value="<?= $item['qtd']?>" name="<?= $row_rsProduto['referencia']?>">
+                                                <span class="inc qtybtn">+</span>
                                             </div>
                                         </div>
                                     </td>
