@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 06-Ago-2021 às 18:02
+-- Tempo de geração: 16-Ago-2021 às 22:51
 -- Versão do servidor: 10.4.19-MariaDB
 -- versão do PHP: 8.0.7
 
@@ -53,6 +53,52 @@ INSERT INTO `categoriaspt` (`id`, `categoria`, `imagem`, `menu`, `scroll`, `dest
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `encomendasdetpt`
+--
+
+CREATE TABLE `encomendasdetpt` (
+  `numEncomenda` int(11) NOT NULL,
+  `produto` varchar(25) NOT NULL,
+  `quantidade` int(11) NOT NULL,
+  `preco` double NOT NULL,
+  `estado` varchar(25) NOT NULL DEFAULT 'Pendente',
+  `designacao` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `encomendasdetpt`
+--
+
+INSERT INTO `encomendasdetpt` (`numEncomenda`, `produto`, `quantidade`, `preco`, `estado`, `designacao`) VALUES
+(6, 'product-11', 1, 2, 'Pendente', 'Sumo laranja'),
+(6, 'product-9', 1, 4, 'Pendente', 'Uvas Passas');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `encomendaspt`
+--
+
+CREATE TABLE `encomendaspt` (
+  `numEncomenda` int(11) NOT NULL,
+  `dataEncomenda` date NOT NULL DEFAULT current_timestamp(),
+  `utilizador` varchar(80) NOT NULL,
+  `rua` varchar(80) NOT NULL,
+  `localidade` varchar(80) NOT NULL,
+  `estado` varchar(50) NOT NULL DEFAULT 'Pendente',
+  `pagamento` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `encomendaspt`
+--
+
+INSERT INTO `encomendaspt` (`numEncomenda`, `dataEncomenda`, `utilizador`, `rua`, `localidade`, `estado`, `pagamento`) VALUES
+(6, '2021-08-16', 'it.fernandolira@gmail.com', 'Av.', 'Gaia', 'Pendente', 'visa');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `linksuteis`
 --
 
@@ -88,26 +134,27 @@ CREATE TABLE `produtospt` (
   `imagem` varchar(100) NOT NULL,
   `preco` double(4,2) NOT NULL,
   `categoria` int(11) NOT NULL,
-  `destaque` tinyint(1) NOT NULL DEFAULT 0
+  `destaque` tinyint(1) NOT NULL DEFAULT 0,
+  `desconto` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `produtospt`
 --
 
-INSERT INTO `produtospt` (`referencia`, `designacao`, `imagem`, `preco`, `categoria`, `destaque`) VALUES
-('product-1', 'Carne de Vitela', 'product-1.jpg', 16.00, 5, 1),
-('product-10', 'Frango frito', 'product-10.jpg', 3.00, 5, 0),
-('product-11', 'Sumo laranja', 'product-11.jpg', 2.00, 4, 1),
-('product-12', 'Cabaz de fruta', 'product-12.jpg', 6.90, 1, 1),
-('product-2', 'Bananas', 'product-2.jpg', 2.00, 1, 0),
-('product-3', 'Goiaba', 'product-3.jpg', 3.40, 1, 1),
-('product-4', 'Uvas', 'product-4.jpg', 1.70, 1, 0),
-('product-5', 'Hamburger', 'product-5.jpg', 7.50, 5, 1),
-('product-6', 'Manga', 'product-6.jpg', 2.00, 1, 1),
-('product-7', 'Melancia', 'product-7.jpg', 0.80, 1, 1),
-('product-8', 'Maçãs', 'product-8.jpg', 1.50, 1, 1),
-('product-9', 'Uvas Passas', 'product-9.jpg', 4.00, 2, 1);
+INSERT INTO `produtospt` (`referencia`, `designacao`, `imagem`, `preco`, `categoria`, `destaque`, `desconto`) VALUES
+('product-1', 'Carne de Vitela', 'product-1.jpg', 16.00, 5, 1, 20),
+('product-10', 'Frango frito', 'product-10.jpg', 3.00, 5, 0, 0),
+('product-11', 'Sumo laranja', 'product-11.jpg', 2.00, 4, 1, 0),
+('product-12', 'Cabaz de fruta', 'product-12.jpg', 6.90, 1, 1, 30),
+('product-2', 'Bananas', 'product-2.jpg', 2.00, 1, 0, 0),
+('product-3', 'Goiaba', 'product-3.jpg', 3.40, 1, 1, 15),
+('product-4', 'Uvas', 'product-4.jpg', 1.70, 1, 0, 0),
+('product-5', 'Hamburger', 'product-5.jpg', 7.50, 5, 1, 10),
+('product-6', 'Manga', 'product-6.jpg', 2.00, 1, 1, 0),
+('product-7', 'Melancia', 'product-7.jpg', 0.80, 1, 1, 0),
+('product-8', 'Maçãs', 'product-8.jpg', 1.50, 1, 1, 15),
+('product-9', 'Uvas Passas', 'product-9.jpg', 4.00, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -130,6 +177,28 @@ INSERT INTO `redessociais` (`id`, `class`, `link`) VALUES
 (2, 'fa fa-instagram', '#'),
 (3, 'fa fa-twitter', '#'),
 (4, 'fa fa-linkedin', '#');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `userspt`
+--
+
+CREATE TABLE `userspt` (
+  `email` varchar(80) NOT NULL,
+  `password` varchar(250) NOT NULL,
+  `nome` varchar(80) NOT NULL,
+  `rua` varchar(80) NOT NULL,
+  `localidade` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `userspt`
+--
+
+INSERT INTO `userspt` (`email`, `password`, `nome`, `rua`, `localidade`) VALUES
+('it.fernandolira@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Fernando', 'Av.', 'Gaia'),
+('prof.lira@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Fernando Lira', '53', 'Gaia');
 
 -- --------------------------------------------------------
 
@@ -195,6 +264,19 @@ ALTER TABLE `categoriaspt`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `encomendasdetpt`
+--
+ALTER TABLE `encomendasdetpt`
+  ADD PRIMARY KEY (`numEncomenda`,`produto`);
+
+--
+-- Índices para tabela `encomendaspt`
+--
+ALTER TABLE `encomendaspt`
+  ADD PRIMARY KEY (`numEncomenda`),
+  ADD KEY `fkUser` (`utilizador`);
+
+--
 -- Índices para tabela `linksuteis`
 --
 ALTER TABLE `linksuteis`
@@ -212,6 +294,12 @@ ALTER TABLE `produtospt`
 --
 ALTER TABLE `redessociais`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `userspt`
+--
+ALTER TABLE `userspt`
+  ADD PRIMARY KEY (`email`);
 
 --
 -- Índices para tabela `variaveisen`
@@ -236,6 +324,12 @@ ALTER TABLE `categoriaspt`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT de tabela `encomendaspt`
+--
+ALTER TABLE `encomendaspt`
+  MODIFY `numEncomenda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT de tabela `linksuteis`
 --
 ALTER TABLE `linksuteis`
@@ -250,6 +344,18 @@ ALTER TABLE `redessociais`
 --
 -- Restrições para despejos de tabelas
 --
+
+--
+-- Limitadores para a tabela `encomendasdetpt`
+--
+ALTER TABLE `encomendasdetpt`
+  ADD CONSTRAINT `fkEncomenda` FOREIGN KEY (`numEncomenda`) REFERENCES `encomendaspt` (`numEncomenda`) ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `encomendaspt`
+--
+ALTER TABLE `encomendaspt`
+  ADD CONSTRAINT `fkUser` FOREIGN KEY (`utilizador`) REFERENCES `userspt` (`email`) ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `produtospt`
