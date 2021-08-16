@@ -28,6 +28,7 @@ function deleteFromCart(referencia) {
                 var data=this.responseText;
                 var hideLine = document.getElementById(referencia);
                 hideLine.style.display = "none";
+                location.reload();
             }
         };
         xmlhttp.open("POST", "deletefromcart.php", true);
@@ -40,6 +41,7 @@ function updateCart(referencia,qty) {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var data=this.responseText;
+            location.reload();
         }
     };
     xmlhttp.open("POST", "updatecart.php", true);

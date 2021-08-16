@@ -220,7 +220,7 @@ $rsProdDestaque->data_seek(0);
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="shoping__cart__table">
+                    <div class="shoping__cart__table" id="carrinho">
                         <table>
                             <thead>
                                 <tr>
@@ -279,13 +279,6 @@ $rsProdDestaque->data_seek(0);
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-12">
-                    <div class="shoping__cart__btns">
-                        <a href="index.php" class="primary-btn cart-btn">CONTINUE SHOPPING</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            Upadate Cart</a>
-                    </div>
-                </div>
                 <div class="col-lg-6">
                     <div class="shoping__continue">
                         <div class="shoping__discount">
