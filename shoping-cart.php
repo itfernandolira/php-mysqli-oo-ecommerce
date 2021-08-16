@@ -297,7 +297,7 @@ $rsProdDestaque->data_seek(0);
                             <li>Subtotal <span><?= number_format($aPagar,2) ?> €</span></li>
                             <li>Total <span><?= number_format($aPagar,2) ?> €</span></li>
                         </ul>
-                        <a href="#" class="primary-btn">PROCEED TO CHECKOUT</a>
+                        <a href="checkout.php" class="primary-btn">PROCEED TO CHECKOUT</a>
                     </div>
                 </div>
             </div>
