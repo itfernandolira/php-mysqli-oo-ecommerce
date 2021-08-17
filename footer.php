@@ -91,9 +91,9 @@ $rsLinks->data_seek(0);
                     <div class="footer__widget">
                         <h6><?= $row_rsVariaveis['joinNewsletter']?></h6>
                         <p><?= $row_rsVariaveis['textoNewsletter']?></p>
-                        <form action="#">
-                            <input type="text" placeholder="<?= $row_rsVariaveis['inputNewsletter']?>">
-                            <button type="submit" class="site-btn"><?= $row_rsVariaveis['buttonNewsletter']?></button>
+                        <form action="newsletter.php" method="POST">
+                            <input type="text" placeholder="<?= $row_rsVariaveis['inputNewsletter']?>" name="email">
+                            <button type="submit" class="site-btn" onclick="subscreve()"><?= $row_rsVariaveis['buttonNewsletter']?></button>
                         </form>
                         <div class="footer__widget__social">
                         <?php 

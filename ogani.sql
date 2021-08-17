@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16-Ago-2021 às 22:51
+-- Tempo de geração: 17-Ago-2021 às 19:55
 -- Versão do servidor: 10.4.19-MariaDB
 -- versão do PHP: 8.0.7
 
@@ -121,6 +121,17 @@ INSERT INTO `linksuteis` (`id`, `link`, `texto`) VALUES
 (6, '#', 'Link6'),
 (7, '#', 'Link 7'),
 (8, '#', 'Link 8');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `newsletter`
+--
+
+CREATE TABLE `newsletter` (
+  `id` int(11) NOT NULL,
+  `endereco` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -283,6 +294,12 @@ ALTER TABLE `linksuteis`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `newsletter`
+--
+ALTER TABLE `newsletter`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices para tabela `produtospt`
 --
 ALTER TABLE `produtospt`
@@ -334,6 +351,12 @@ ALTER TABLE `encomendaspt`
 --
 ALTER TABLE `linksuteis`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `newsletter`
+--
+ALTER TABLE `newsletter`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `redessociais`
