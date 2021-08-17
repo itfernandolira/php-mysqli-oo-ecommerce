@@ -449,6 +449,7 @@ $rsCategorias->data_seek(0);
                                             <th>Preço</th>
                                             <th>Desconto</th>
                                             <th>Destaque</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -460,6 +461,7 @@ $rsCategorias->data_seek(0);
                                             <th>Preço</th>
                                             <th>Desconto</th>
                                             <th>Destaque</th>
+                                            <th>Ações</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -472,6 +474,12 @@ $rsCategorias->data_seek(0);
                                             <td><?= (number_format($row_rsProdutos['preco'],2))?> €</td>
                                             <td><?= $row_rsProdutos['desconto']?>%</td>
                                             <td><?php if($row_rsProdutos['destaque']) echo "<i class='fas fa-check'></i>";?></td>
+                                            <td>
+                                                <a href="products-del.php?ref=<?php echo $row_rsProdutos['referencia']; ?>" class="btn btn-danger btn-icon-split" onclick="return confirm('Tem a certeza que deseja apagar este registo?');">
+                                                    <span class="icon text-white-50"><i class="fas fa-trash"></i></span>
+                                                    <span class="text">Apagar</span>
+                                                </a>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                     </tbody>
