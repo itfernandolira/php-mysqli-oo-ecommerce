@@ -417,7 +417,7 @@ if (isset($_GET['ref'])) {
 
                     <!-- Page Heading -->
                     <h1 class="h3 mb-2 text-gray-800">Produtos PT</h1>
-                    
+                    <form action="uploadcsv.php" method="POST" enctype="multipart/form-data">Importar Produtos de CSV: <input type="file" name="ficheiro"><input type="submit" value="Importar"></form>
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
