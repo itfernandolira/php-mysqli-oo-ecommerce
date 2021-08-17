@@ -23,6 +23,25 @@ if($rsCategorias === FALSE) {
 
 $rsCategorias->data_seek(0);
 
+$editar=false;
+if (isset($_GET['ref'])) {
+
+    $editar=true;
+    $ref=$_GET['ref'];
+
+    //registo a editar
+    $qProd="select produtospt.* from produtospt where produtospt.referencia='$ref'";
+    $rsProd=$csogani->query($qProd);
+
+    if($rsProd === FALSE) {
+        die("Erro no SQL: " . $qProd . " Error: " . $csogani->error);
+    }
+
+    $rsProd->data_seek(0);
+    $row_rsProd=$rsProd->fetch_assoc();
+
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt">
@@ -402,38 +421,51 @@ $rsCategorias->data_seek(0);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                        <form class="user" action="products-add.php" method="post" enctype="multipart/form-data">
+                        <form class="user" action="<?php if ($editar) { echo 'products-upd.php'; } else {echo 'products-add.php';}?>" method="post" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                placeholder="Indique a referencia..." name="referencia">
+                                                placeholder="Indique a referencia..." name="referencia"
+                                                value="<?php if ($editar) echo $row_rsProd['referencia']?>">
+                                            <?php if ($editar) { ?>
+                                                <input type="text" value="<?= $ref ?>" hidden name="refOld">
+                                            <?php } ?>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                placeholder="Indique a designação..." name="designacao">
+                                                placeholder="Indique a designação..." name="designacao"
+                                                value="<?php if ($editar) echo $row_rsProd['designacao']?>">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                placeholder="Indique o preço..." name="preco">
+                                                placeholder="Indique o preço..." name="preco"
+                                                value="<?php if ($editar) echo $row_rsProd['preco']?>">
                                         </div>
                                         <div class="form-group">
                                             <input type="text" class="form-control form-control-user"
-                                                placeholder="Indique o desconto..." name="desconto">
+                                                placeholder="Indique o desconto..." name="desconto"
+                                                value="<?php if ($editar) echo $row_rsProd['desconto']?>">
                                         </div>
                                         <div class="form-group">
                                             <select id="categoria" name="categoria">
+                                            <?php if (!$editar) {?>
                                             <option value="" disabled selected>Indique a categoria...</option>
+                                            <?php } ?>
                                             <?php while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { ?>
-                                                <option value="<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></option>
+                                                <option value="<?= $row_rsCategorias['id']?>" <?php if ($editar && ($row_rsProd['categoria']==$row_rsCategorias['id'])) echo 'selected';?>><?= $row_rsCategorias['categoria']?></option>
                                             <?php } ?>
                                             </select>
                                         </div>
                                         <div class="form-group"> Em destaque
-                                            <input type="checkbox" value="1" name="destaque">
+                                            <input type="checkbox" value="1" name="destaque"
+                                            <?php if ($editar && $row_rsProd['destaque']) echo 'checked';?>>
                                         </div>
+                                        <?php if ($editar) {?>
+                                            <img src="../img/product/<?= $row_rsProd['imagem']?>" width="200px">
+                                        <?php } ?>
                                         <div class="form-group">Imagem
                                             <input type="file" name="imagem" accept="image/png, image/jpeg">
                                         </div>
-                                        <input type="submit" value="Adicionar registo" class="btn btn-success">
+                                        <input type="submit" value="<?php if ($editar) {echo 'Editar registo'; } else {echo 'Adicionar registo';}?>" class="btn btn-success">
 
                                     </form>
                         </div>
@@ -475,6 +507,12 @@ $rsCategorias->data_seek(0);
                                             <td><?= $row_rsProdutos['desconto']?>%</td>
                                             <td><?php if($row_rsProdutos['destaque']) echo "<i class='fas fa-check'></i>";?></td>
                                             <td>
+                                                <a href="produtospt.php?ref=<?php echo $row_rsProdutos['referencia']; ?>" class="btn btn-info btn-icon-split">
+                                                    <span class="icon text-white-50">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </span>
+                                                    <span class="text">Editar</span>
+                                                </a><br><br>    
                                                 <a href="products-del.php?ref=<?php echo $row_rsProdutos['referencia']; ?>" class="btn btn-danger btn-icon-split" onclick="return confirm('Tem a certeza que deseja apagar este registo?');">
                                                     <span class="icon text-white-50"><i class="fas fa-trash"></i></span>
                                                     <span class="text">Apagar</span>
