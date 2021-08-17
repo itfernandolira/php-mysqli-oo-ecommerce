@@ -3,7 +3,7 @@ error_reporting(E_ERROR | E_PARSE);
 session_start();
 require_once("../connection/connection.php");
 
-//recordset Produtos em Destaque
+//recordset Produtos
 $qProdutos="select produtospt.*,categoriaspt.categoria as categDescr from produtospt,categoriaspt where produtospt.categoria=categoriaspt.id";
 $rsProdutos=$csogani->query($qProdutos);
 
@@ -12,6 +12,16 @@ if($rsProdutos === FALSE) {
   }
 
 $rsProdutos->data_seek(0);
+
+//recordset Categorias
+$qCategorias="select id,categoria from categoriaspt order by categoria";
+$rsCategorias=$csogani->query($qCategorias);
+
+if($rsCategorias === FALSE) {
+    die("Erro no SQL: " . $qCategorias . " Error: " . $csogani->error);
+  }
+
+$rsCategorias->data_seek(0);
 
 ?>
 <!DOCTYPE html>
@@ -392,7 +402,40 @@ $rsProdutos->data_seek(0);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        <form class="user" action="products-add.php" method="post" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                placeholder="Indique a referencia..." name="referencia">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                placeholder="Indique a designação..." name="designacao">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                placeholder="Indique o preço..." name="preco">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                placeholder="Indique o desconto..." name="desconto">
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="categoria" name="categoria">
+                                            <option value="" disabled selected>Indique a categoria...</option>
+                                            <?php while ($row_rsCategorias = $rsCategorias->fetch_assoc()) { ?>
+                                                <option value="<?= $row_rsCategorias['id']?>"><?= $row_rsCategorias['categoria']?></option>
+                                            <?php } ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group"> Em destaque
+                                            <input type="checkbox" value="1" name="destaque">
+                                        </div>
+                                        <div class="form-group">Imagem
+                                            <input type="file" name="imagem" accept="image/png, image/jpeg">
+                                        </div>
+                                        <input type="submit" value="Adicionar registo" class="btn btn-success">
+
+                                    </form>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -506,5 +549,6 @@ $rsProdutos->data_seek(0);
 </html>
 <?php
 $rsProdutos->free();
+$rsCategorias->free();
 $csogani->close();
 ?>
