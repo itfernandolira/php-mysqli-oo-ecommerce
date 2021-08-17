@@ -1,5 +1,11 @@
+<?php
+error_reporting(E_ERROR | E_PARSE);
+session_start();
+require_once("../connection/connection.php");
+
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
 
@@ -132,6 +138,13 @@
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Tables</span></a>
+            </li>
+
+            <!-- Nav Item - ProdutosPT -->
+            <li class="nav-item">
+                <a class="nav-link" href="produtospt.php">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>ProdutosPT</span></a>
             </li>
 
             <!-- Divider -->
@@ -757,3 +770,6 @@
 </body>
 
 </html>
+<?php
+$csogani->close();
+?>
