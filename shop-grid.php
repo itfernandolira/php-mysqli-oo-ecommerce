@@ -497,7 +497,7 @@ $rsProdutos->data_seek(0);
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
-                                    <h6><a href="#"><?= $row_rsProdutos['designacao']?></a></h6>
+                                    <h6><a href="shop-details.php?product=<?= $row_rsProdutos['referencia']?>"><?= $row_rsProdutos['designacao']?></a></h6>
                                     <h5><?= $row_rsProdutos['preco']?> €</h5>
                                 </div>
                             </div>
